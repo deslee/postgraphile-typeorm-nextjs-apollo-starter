@@ -15,9 +15,10 @@ export const postGraphileOptions: PostGraphileOptions = {
     graphileBuildOptions: {
         pgOmitListSuffix: true
     },
-    pgSettings: async req => {
+    pgSettings: async (req: any) => {
         return {
-            'claims.role': 'le3io_user'
+            'claims.role': 'le3io_user',
+            'claims.userId': req.user && req.user.userId
         }
     }
 }
