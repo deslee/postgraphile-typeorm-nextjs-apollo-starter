@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, JoinColumn, Index, ManyToOne } from "typeorm";
 import { User } from "./User";
 
 @Entity({
@@ -8,11 +8,13 @@ export class Session {
     @PrimaryGeneratedColumn()
     token: string;
 
-    @OneToOne(_ => User)
+    @ManyToOne(_ => User, { nullable: false })
     @JoinColumn({name: 'userId'})
+    @Index()
     user: User;
 
     @Column()
+    @Index()
     invalidAfter: Date;
 
     @Column()

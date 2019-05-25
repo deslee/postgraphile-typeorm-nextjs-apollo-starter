@@ -1,6 +1,7 @@
 import { Auditable } from "./Auditable";
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, Index } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, Index, ManyToMany } from "typeorm";
 import config from "../../config";
+import { Site } from "./Site";
 
 @Entity({
     schema: config.db.schema
@@ -19,6 +20,9 @@ export class User implements Auditable {
         type: 'jsonb'
     })
     data: string;
+
+    @ManyToMany(_ => Site, site => site.users)
+    sites: Site[];
 
     @Column({nullable: true})
     createdBy: string;

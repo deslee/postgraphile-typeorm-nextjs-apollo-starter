@@ -1,6 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, Index } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, Index, OneToMany, ManyToMany, JoinTable } from 'typeorm';
 import { Auditable } from './Auditable';
 import config from "../../config";
+import { Post } from './Post';
+import { Category } from './Category';
+import { User } from './User';
+import { Asset } from './Asset';
 
 @Entity({
     schema: config.db.schema
@@ -17,6 +21,19 @@ export class Site implements Auditable {
         type: 'jsonb'
     })
     data: string;
+
+    @OneToMany(_ => Post, post => post.site)
+    posts: Post[];
+
+    @OneToMany(_ => Category, category => category.site)
+    categories: Category[];
+
+    @OneToMany(_ => Asset, asset => asset.site)
+    assets: Asset[];
+
+    @ManyToMany(_ => User, user => user.sites)
+    @JoinTable()
+    users: User[];
 
     @Column({nullable: true})
     createdBy: string;
