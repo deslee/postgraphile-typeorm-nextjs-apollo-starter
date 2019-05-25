@@ -24,7 +24,7 @@ const config = convict({
         },
         user: {
             format: String,
-            default: 'postgres',
+            default: 'le3io_user',
             env: 'DB_USER'
         },
         pass: {

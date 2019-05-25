@@ -1,6 +1,7 @@
 import {
     withPostGraphileContext,
-    createPostGraphileSchema
+    createPostGraphileSchema,
+    PostGraphileOptions
 } from 'postgraphile';
 
 import { makeRemoteExecutableSchema } from 'graphql-tools';
@@ -12,6 +13,7 @@ import config from '../../config';
 import { postGraphileOptions } from './config'
 
 let _schema: GraphQLSchema;
+type Locals = {[key: string]: {} | string | number | boolean | undefined | null};
 const getSchema = async () => {
     if (!_schema) {
         _schema = await createPostGraphileSchema(
@@ -31,7 +33,7 @@ function initPgPool() {
     return pgPool;
 }
 
-const fetcher = async (operation: FetcherOperation) => {
+const fetcherFactory = (locals?: Locals) => async (operation: FetcherOperation) => {
     const graphqlContext = operation.context
         ? operation.context.graphqlContext
         : {};
@@ -39,6 +41,7 @@ const fetcher = async (operation: FetcherOperation) => {
     const postGraphileContextOptions = {
         ...postGraphileOptions,
         ...graphqlContext,
+        pgSettings: locals !== undefined ? locals : undefined,
         pgPool: pgPool || initPgPool()
     };
     const postgraphileSchema = await getSchema();
@@ -58,6 +61,7 @@ const fetcher = async (operation: FetcherOperation) => {
 };
 
 const typeDefs = fs.readFileSync('./src/generated/postgraphile.graphql', 'utf-8');
-const schema = makeRemoteExecutableSchema({ fetcher, schema: typeDefs });
 
-export default schema;
+export const schemaFactory: (locals?: Locals) => GraphQLSchema = (locals) => makeRemoteExecutableSchema({ fetcher: fetcherFactory(locals), schema: typeDefs })
+
+export default schemaFactory();

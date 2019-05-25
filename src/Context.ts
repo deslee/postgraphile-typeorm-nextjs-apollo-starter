@@ -5,6 +5,6 @@ import { IncomingMessage, ServerResponse } from 'http';
 export interface Context {
     orm: Connection;
     gql: Binding;
-    req: IncomingMessage;
+    req: any;
     res: ServerResponse;
 }

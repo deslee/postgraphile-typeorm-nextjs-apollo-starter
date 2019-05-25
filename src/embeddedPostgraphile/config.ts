@@ -14,11 +14,5 @@ export const postGraphileOptions: PostGraphileOptions = {
     legacyRelations: 'omit',
     graphileBuildOptions: {
         pgOmitListSuffix: true
-    },
-    pgSettings: async (req: any) => {
-        return {
-            'claims.role': 'le3io_user',
-            'claims.userId': req.user && req.user.userId
-        }
     }
 }
