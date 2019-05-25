@@ -67,10 +67,6 @@ input AssetInput {
   id: Int
   state: String!
   data: JSON!
-  createdBy: String
-  updatedBy: String
-  createdAt: Datetime
-  updatedAt: Datetime
   siteId: Int!
 }
 
@@ -81,10 +77,6 @@ input AssetPatch {
   id: Int
   state: String
   data: JSON
-  createdBy: String
-  updatedBy: String
-  createdAt: Datetime
-  updatedAt: Datetime
   siteId: Int
 }
 
@@ -206,10 +198,6 @@ input CategoryInput {
   id: Int
   data: JSON!
   name: String!
-  createdBy: String
-  updatedBy: String
-  createdAt: Datetime
-  updatedAt: Datetime
   siteId: Int!
 }
 
@@ -220,10 +208,6 @@ input CategoryPatch {
   id: Int
   data: JSON
   name: String
-  createdBy: String
-  updatedBy: String
-  createdAt: Datetime
-  updatedAt: Datetime
   siteId: Int
 }
 
@@ -1531,10 +1515,6 @@ input PostInput {
   type: String
   date: Datetime
   data: JSON!
-  createdBy: String
-  updatedBy: String
-  createdAt: Datetime
-  updatedAt: Datetime
   siteId: Int!
 }
 
@@ -1546,10 +1526,6 @@ input PostPatch {
   type: String
   date: Datetime
   data: JSON
-  createdBy: String
-  updatedBy: String
-  createdAt: Datetime
-  updatedAt: Datetime
   siteId: Int
 }
 
@@ -1919,10 +1895,6 @@ input SiteInput {
   id: Int
   name: String!
   data: JSON!
-  createdBy: String
-  updatedBy: String
-  createdAt: Datetime
-  updatedAt: Datetime
 }
 
 """Represents an update to a `Site`. Fields that are set will be updated."""
@@ -1930,10 +1902,6 @@ input SitePatch {
   id: Int
   name: String
   data: JSON
-  createdBy: String
-  updatedBy: String
-  createdAt: Datetime
-  updatedAt: Datetime
 }
 
 """Methods to use when ordering `Site`."""
@@ -2575,10 +2543,6 @@ input UserInput {
   id: Int
   email: String!
   data: JSON!
-  createdBy: String
-  updatedBy: String
-  createdAt: Datetime
-  updatedAt: Datetime
 }
 
 """Represents an update to a `User`. Fields that are set will be updated."""
@@ -2586,10 +2550,6 @@ input UserPatch {
   id: Int
   email: String
   data: JSON
-  createdBy: String
-  updatedBy: String
-  createdAt: Datetime
-  updatedAt: Datetime
 }
 
 """Methods to use when ordering `User`."""

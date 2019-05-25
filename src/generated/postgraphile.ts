@@ -296,10 +296,6 @@ export interface AssetInput {
   id?: Int | null
   state: String
   data: JSON
-  createdBy?: String | null
-  updatedBy?: String | null
-  createdAt?: Datetime | null
-  updatedAt?: Datetime | null
   siteId: Int
 }
 
@@ -311,10 +307,6 @@ export interface AssetPatch {
   id?: Int | null
   state?: String | null
   data?: JSON | null
-  createdBy?: String | null
-  updatedBy?: String | null
-  createdAt?: Datetime | null
-  updatedAt?: Datetime | null
   siteId?: Int | null
 }
 
@@ -342,10 +334,6 @@ export interface CategoryInput {
   id?: Int | null
   data: JSON
   name: String
-  createdBy?: String | null
-  updatedBy?: String | null
-  createdAt?: Datetime | null
-  updatedAt?: Datetime | null
   siteId: Int
 }
 
@@ -357,10 +345,6 @@ export interface CategoryPatch {
   id?: Int | null
   data?: JSON | null
   name?: String | null
-  createdBy?: String | null
-  updatedBy?: String | null
-  createdAt?: Datetime | null
-  updatedAt?: Datetime | null
   siteId?: Int | null
 }
 
@@ -706,10 +690,6 @@ export interface PostInput {
   type?: String | null
   date?: Datetime | null
   data: JSON
-  createdBy?: String | null
-  updatedBy?: String | null
-  createdAt?: Datetime | null
-  updatedAt?: Datetime | null
   siteId: Int
 }
 
@@ -724,10 +704,6 @@ export interface PostPatch {
   type?: String | null
   date?: Datetime | null
   data?: JSON | null
-  createdBy?: String | null
-  updatedBy?: String | null
-  createdAt?: Datetime | null
-  updatedAt?: Datetime | null
   siteId?: Int | null
 }
 
@@ -753,10 +729,6 @@ export interface SiteInput {
   id?: Int | null
   name: String
   data: JSON
-  createdBy?: String | null
-  updatedBy?: String | null
-  createdAt?: Datetime | null
-  updatedAt?: Datetime | null
 }
 
 /*
@@ -767,10 +739,6 @@ export interface SitePatch {
   id?: Int | null
   name?: String | null
   data?: JSON | null
-  createdBy?: String | null
-  updatedBy?: String | null
-  createdAt?: Datetime | null
-  updatedAt?: Datetime | null
 }
 
 /*
@@ -1028,10 +996,6 @@ export interface UserInput {
   id?: Int | null
   email: String
   data: JSON
-  createdBy?: String | null
-  updatedBy?: String | null
-  createdAt?: Datetime | null
-  updatedAt?: Datetime | null
 }
 
 /*
@@ -1042,10 +1006,6 @@ export interface UserPatch {
   id?: Int | null
   email?: String | null
   data?: JSON | null
-  createdBy?: String | null
-  updatedBy?: String | null
-  createdAt?: Datetime | null
-  updatedAt?: Datetime | null
 }
 
 /*
