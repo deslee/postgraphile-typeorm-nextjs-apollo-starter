@@ -1,0 +1,88 @@
+# import SitesOrderBy, SitesCondition, Site, UsersOrderBy, UserCondition, User, CreateSiteInput, CreateSitePayload, CreateUserInput, CreateUserPayload, UpdateSiteInput, UpdateSitePayload, UpdateUserByEmailInput, UpdateUserPayload, DeleteSiteInput, DeleteSitePayload, DeleteUserByEmailInput, DeleteUserPayload from "./generated/postgraphile.graphql"
+
+type Query {
+  """Reads a set of `Site`."""
+  sites(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `Site`."""
+    orderBy: [SitesOrderBy!]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: SiteCondition
+  ): [Site!]
+
+  """Reads a set of `User`."""
+  users(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Skip the first `n` values."""
+    offset: Int
+
+    """The method to use when ordering `User`."""
+    orderBy: [UsersOrderBy!]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: UserCondition
+  ): [User!]
+  userByEmail(email: String!): User
+}
+
+type Mutation {
+  """Creates a single `Site`."""
+  createSite(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateSiteInput!
+  ): CreateSitePayload
+
+  """Creates a single `User`."""
+  createUser(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateUserInput!
+  ): CreateUserPayload
+
+  """Updates a single `Site` using a unique key and a patch."""
+  updateSite(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateSiteInput!
+  ): UpdateSitePayload
+
+  """Updates a single `User` using a unique key and a patch."""
+  updateUserByEmail(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateUserByEmailInput!
+  ): UpdateUserPayload
+
+  """Deletes a single `Site` using a unique key."""
+  deleteSite(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteSiteInput!
+  ): DeleteSitePayload
+
+  """Deletes a single `User` using a unique key."""
+  deleteUserByEmail(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteUserByEmailInput!
+  ): DeleteUserPayload
+}

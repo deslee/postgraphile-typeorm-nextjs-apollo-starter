@@ -1,0 +1,34 @@
+{
+  "name": "le3.io",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "migration:generate": "./node_modules/.bin/ts-node ./node_modules/typeorm/cli.js migration:generate -n Migration -f ormconfig.ts -d src/migration/",
+    "schema:sync": "./node_modules/.bin/ts-node ./node_modules/typeorm/cli.js schema:sync -f ormconfig.ts",
+    "migration:run": "./node_modules/.bin/ts-node ./node_modules/typeorm/cli.js migration:run -f ormconfig.ts",
+    "migration:revert": "./node_modules/.bin/ts-node ./node_modules/typeorm/cli.js migration:revert -f ormconfig.ts",
+    "postgraphile:schema-generate": "ts-node scripts/postgraphile-schema.generate.ts",
+    "postgraphile:schema-binding": "graphql-binding --language typescript --input src/embeddedPostgraphile/index.ts --outputBinding src/generated/postgraphile.ts && ts-node scripts/patch-binding.ts",
+    "postgraphile:code-generate": "cross-env CODEGEN_ENUMS_AS_TYPES=TRUE gql-gen"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@graphile-contrib/pg-simplify-inflector": "^5.0.0-beta.1",
+    "@types/convict": "^4.2.1",
+    "convict": "^5.0.0",
+    "graphql-codegen-typescript-template": "^0.18.2",
+    "graphql-import": "^0.7.1",
+    "postgraphile": "^4.4.0",
+    "typeorm": "^0.2.17"
+  },
+  "devDependencies": {
+    "cross-env": "^5.2.0",
+    "graphql-binding": "^2.5.1",
+    "graphql-code-generator": "^0.18.2",
+    "ts-node": "^8.1.1",
+    "ts-node-dev": "^1.0.0-pre.39",
+    "typescript": "^3.4.5"
+  }
+}
