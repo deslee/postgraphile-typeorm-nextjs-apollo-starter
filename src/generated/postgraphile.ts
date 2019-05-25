@@ -187,10 +187,10 @@ export interface SiteInput {
   id?: Int | null
   name: String
   data: JSON
-  createdBy: String
-  updatedBy: String
-  createdAt: Datetime
-  updatedAt: Datetime
+  createdBy?: String | null
+  updatedBy?: String | null
+  createdAt?: Datetime | null
+  updatedAt?: Datetime | null
 }
 
 /*
@@ -279,10 +279,10 @@ export interface UserInput {
   id?: Int | null
   email: String
   data: JSON
-  createdBy: String
-  updatedBy: String
-  createdAt: Datetime
-  updatedAt: Datetime
+  createdBy?: String | null
+  updatedBy?: String | null
+  createdAt?: Datetime | null
+  updatedAt?: Datetime | null
 }
 
 /*
@@ -354,10 +354,10 @@ export interface Site extends Node {
   id: Int
   name: String
   data: JSON
-  createdBy: String
-  updatedBy: String
-  createdAt: Datetime
-  updatedAt: Datetime
+  createdBy?: String | null
+  updatedBy?: String | null
+  createdAt?: Datetime | null
+  updatedAt?: Datetime | null
 }
 
 /*
@@ -385,10 +385,10 @@ export interface User extends Node {
   id: Int
   email: String
   data: JSON
-  createdBy: String
-  updatedBy: String
-  createdAt: Datetime
-  updatedAt: Datetime
+  createdBy?: String | null
+  updatedBy?: String | null
+  createdAt?: Datetime | null
+  updatedAt?: Datetime | null
 }
 
 /*

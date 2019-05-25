@@ -47,7 +47,9 @@ const fetcher = async (operation: FetcherOperation) => {
             postgraphileSchema,
             operation.query,
             null,
-            context,
+            {
+                ...context
+            },
             operation.variables,
             operation.operationName
         )

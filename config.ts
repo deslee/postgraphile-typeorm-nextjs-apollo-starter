@@ -6,6 +6,11 @@ const config = convict({
         default: 'development',
         env: 'NODE_ENV'
     },
+    port: {
+        format: 'port',
+        default: 8080,
+        env: 'PORT'
+    },
     db: {
         host: {
             format: 'ipaddress',
@@ -45,13 +50,9 @@ config.validate({allowed: 'strict'})
 
 export default {
     env: config.get('env') as 'development' | 'test' | 'production',
+    port: config.get('port'),
     db: (db => ({
-        host: db.host,
-        port: db.port as number,
-        user: db.user,
-        pass: db.pass,
-        name: db.name,
-        schema: db.schema,
+        ...db,
         url: `postgres://${db.user}:${db.pass}@${db.host}:${db.port}/${db.name}`
     }))(config.get('db'))
 };

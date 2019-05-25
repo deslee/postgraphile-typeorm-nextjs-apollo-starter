@@ -347,10 +347,10 @@ type Site implements Node {
   id: Int!
   name: String!
   data: JSON!
-  createdBy: String!
-  updatedBy: String!
-  createdAt: Datetime!
-  updatedAt: Datetime!
+  createdBy: String
+  updatedBy: String
+  createdAt: Datetime
+  updatedAt: Datetime
 }
 
 """
@@ -384,10 +384,10 @@ input SiteInput {
   id: Int
   name: String!
   data: JSON!
-  createdBy: String!
-  updatedBy: String!
-  createdAt: Datetime!
-  updatedAt: Datetime!
+  createdBy: String
+  updatedBy: String
+  createdAt: Datetime
+  updatedAt: Datetime
 }
 
 """Represents an update to a `Site`. Fields that are set will be updated."""
@@ -547,10 +547,10 @@ type User implements Node {
   id: Int!
   email: String!
   data: JSON!
-  createdBy: String!
-  updatedBy: String!
-  createdAt: Datetime!
-  updatedAt: Datetime!
+  createdBy: String
+  updatedBy: String
+  createdAt: Datetime
+  updatedAt: Datetime
 }
 
 """
@@ -584,10 +584,10 @@ input UserInput {
   id: Int
   email: String!
   data: JSON!
-  createdBy: String!
-  updatedBy: String!
-  createdAt: Datetime!
-  updatedAt: Datetime!
+  createdBy: String
+  updatedBy: String
+  createdAt: Datetime
+  updatedAt: Datetime
 }
 
 """Represents an update to a `User`. Fields that are set will be updated."""

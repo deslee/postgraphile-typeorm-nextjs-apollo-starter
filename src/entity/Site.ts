@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, Index } from 'typeorm';
 import { Auditable } from './Auditable';
 import config from "../../config";
 
@@ -10,6 +10,7 @@ export class Site implements Auditable {
     id: string;
 
     @Column()
+    @Index()
     name: string;
 
     @Column({
@@ -17,15 +18,15 @@ export class Site implements Auditable {
     })
     data: string;
 
-    @Column()
+    @Column({nullable: true})
     createdBy: string;
 
-    @Column()
+    @Column({nullable: true})
     updatedBy: string;
 
-    @Column()
+    @Column({nullable: true})
     createdAt: Date;
 
-    @Column()
+    @Column({nullable: true})
     updatedAt: Date;
 }

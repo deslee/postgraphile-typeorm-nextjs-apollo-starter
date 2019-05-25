@@ -1,6 +1,7 @@
 import config from './config'
+import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 
-const ormconfig = {
+const ormconfig: PostgresConnectionOptions = {
     type: 'postgres',
     host: config.db.host,
     port: config.db.port,
@@ -8,12 +9,12 @@ const ormconfig = {
     password: config.db.pass,
     database: config.db.name,
     schema: 'public',
-    "logging": true,
-    "migrationsRun": false,
-    "entities": [
+    logging: true,
+    migrationsRun: false,
+    entities: [
         "src/entity/**/*"
     ],
-    "migrations": [
+    migrations: [
         "src/migration/**/*"
     ]
 }

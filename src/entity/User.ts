@@ -20,16 +20,16 @@ export class User implements Auditable {
     })
     data: string;
 
-    @Column()
+    @Column({nullable: true})
     createdBy: string;
 
-    @Column()
+    @Column({nullable: true})
     updatedBy: string;
 
-    @Column()
+    @Column({nullable: true})
     createdAt: Date;
 
-    @Column()
+    @Column({nullable: true})
     updatedAt: Date;
 }
 
@@ -43,15 +43,15 @@ export class PrivateUser implements Auditable {
     @Column()
     password: string;
 
-    @Column()
+    @Column({nullable: true})
     createdBy: string;
 
-    @Column()
+    @Column({nullable: true})
     updatedBy: string;
 
-    @Column()
+    @Column({nullable: true})
     createdAt: Date;
 
-    @Column()
+    @Column({nullable: true})
     updatedAt: Date;
 }
