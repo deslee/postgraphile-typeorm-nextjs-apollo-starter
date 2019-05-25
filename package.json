@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "debug": "npm-run-all server:debug",
     "start": "npm-run-all server:runts",
+    "server:debug": "node -r ts-node/register --inspect src/index.ts",
     "server:runts": "node -r ts-node/register src/index.ts",
     "migration:generate": "./node_modules/.bin/ts-node ./node_modules/typeorm/cli.js migration:generate -n Migration -f ormconfig.ts -d src/migration/",
     "schema:sync": "./node_modules/.bin/ts-node ./node_modules/typeorm/cli.js schema:sync -f ormconfig.ts",

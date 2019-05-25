@@ -12,7 +12,7 @@ export class User implements Auditable {
     @Column({
         unique: true
     })
-    @Index()
+    @Index({unique: true})
     email: string;
 
     @Column({

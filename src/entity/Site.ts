@@ -9,8 +9,8 @@ export class Site implements Auditable {
     @PrimaryGeneratedColumn()
     id: string;
 
-    @Column()
-    @Index()
+    @Column({unique: true})
+    @Index({unique: true})
     name: string;
 
     @Column({

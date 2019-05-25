@@ -1,16 +1,15 @@
-import { Context } from '../Context';
-import { switchCase, isUserWhitespacable } from 'babel-types';
+import { Query as BindQuery } from '../generated/postgraphile';
+import { proxyFor } from './utils';
 
-export default {
-    async sites(parent: any, args: any, ctx: Context, info: any) {
-        return await ctx.gql.query.sites(args, info);
-    },
-
-    async users(parent: any, args: any, ctx: Context, info: any) {
-        return await ctx.gql.query.users(args, info);
-    },
-
-    async userByEmail(parent: any, args: any, ctx: Context, info: any) {
-        return await ctx.gql.query.userByEmail(args, info);
-    }
+const Query = {
+    ...proxyFor<BindQuery>([
+        'sites',
+        'site',
+        'siteByName',
+        'users',
+        'userByEmail',
+        'user'
+    ], ctx => ctx.gql.query)
 }
+
+export default Query;

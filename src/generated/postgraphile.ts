@@ -11,6 +11,7 @@ export interface Query {
     sites: <T = Array<Site> | null>(args: { first?: Int | null, offset?: Int | null, orderBy?: Array<SitesOrderBy> | null, condition?: SiteCondition | null }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T | null> ,
     users: <T = Array<User> | null>(args: { first?: Int | null, offset?: Int | null, orderBy?: Array<UsersOrderBy> | null, condition?: UserCondition | null }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T | null> ,
     site: <T = Site | null>(args: { id: Int }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T | null> ,
+    siteByName: <T = Site | null>(args: { name: String }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T | null> ,
     user: <T = User | null>(args: { id: Int }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T | null> ,
     userByEmail: <T = User | null>(args: { email: String }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T | null> ,
     siteByNodeId: <T = Site | null>(args: { nodeId: ID_Output }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T | null> ,
@@ -22,11 +23,13 @@ export interface Mutation {
     createUser: <T = CreateUserPayload | null>(args: { input: CreateUserInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T | null> ,
     updateSiteByNodeId: <T = UpdateSitePayload | null>(args: { input: UpdateSiteByNodeIdInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T | null> ,
     updateSite: <T = UpdateSitePayload | null>(args: { input: UpdateSiteInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T | null> ,
+    updateSiteByName: <T = UpdateSitePayload | null>(args: { input: UpdateSiteByNameInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T | null> ,
     updateUserByNodeId: <T = UpdateUserPayload | null>(args: { input: UpdateUserByNodeIdInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T | null> ,
     updateUser: <T = UpdateUserPayload | null>(args: { input: UpdateUserInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T | null> ,
     updateUserByEmail: <T = UpdateUserPayload | null>(args: { input: UpdateUserByEmailInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T | null> ,
     deleteSiteByNodeId: <T = DeleteSitePayload | null>(args: { input: DeleteSiteByNodeIdInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T | null> ,
     deleteSite: <T = DeleteSitePayload | null>(args: { input: DeleteSiteInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T | null> ,
+    deleteSiteByName: <T = DeleteSitePayload | null>(args: { input: DeleteSiteByNameInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T | null> ,
     deleteUserByNodeId: <T = DeleteUserPayload | null>(args: { input: DeleteUserByNodeIdInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T | null> ,
     deleteUser: <T = DeleteUserPayload | null>(args: { input: DeleteUserInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T | null> ,
     deleteUserByEmail: <T = DeleteUserPayload | null>(args: { input: DeleteUserByEmailInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T | null> 
@@ -121,6 +124,15 @@ export interface CreateUserInput {
 }
 
 /*
+ * All input for the `deleteSiteByName` mutation.
+
+ */
+export interface DeleteSiteByNameInput {
+  clientMutationId?: String | null
+  name: String
+}
+
+/*
  * All input for the `deleteSiteByNodeId` mutation.
 
  */
@@ -205,6 +217,16 @@ export interface SitePatch {
   updatedBy?: String | null
   createdAt?: Datetime | null
   updatedAt?: Datetime | null
+}
+
+/*
+ * All input for the `updateSiteByName` mutation.
+
+ */
+export interface UpdateSiteByNameInput {
+  clientMutationId?: String | null
+  patch: SitePatch
+  name: String
 }
 
 /*

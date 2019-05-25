@@ -17,6 +17,8 @@ type Query {
     """
     condition: SiteCondition
   ): [Site!]
+  site(id: Int!): Site
+  siteByName(name: String!): Site
 
   """Reads a set of `User`."""
   users(
@@ -34,6 +36,7 @@ type Query {
     """
     condition: UserCondition
   ): [User!]
+  user(id: Int!): User
   userByEmail(email: String!): User
 }
 
@@ -62,6 +65,14 @@ type Mutation {
     input: UpdateSiteInput!
   ): UpdateSitePayload
 
+  """Updates a single `Site` using a unique key and a patch."""
+  updateSiteByName(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateSiteByNameInput!
+  ): UpdateSitePayload
+
   """Updates a single `User` using a unique key and a patch."""
   updateUserByEmail(
     """
@@ -77,6 +88,23 @@ type Mutation {
     """
     input: DeleteSiteInput!
   ): DeleteSitePayload
+
+  """Deletes a single `User` using a unique key."""
+  deleteUser(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteUserInput!
+  ): DeleteUserPayload
+
+  """Deletes a single `Site` using a unique key."""
+  deleteSiteByName(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteSiteByNameInput!
+  ): DeleteSitePayload
+
 
   """Deletes a single `User` using a unique key."""
   deleteUserByEmail(
