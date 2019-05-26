@@ -4,6 +4,7 @@
         "moduleResolution": "node",
         "module": "commonjs",
         "sourceMap": true,
+        "jsx": "react",
         "rootDir": "src",
         "outDir": "build",
         "lib": [
@@ -24,5 +25,5 @@
     },
     "exclude": [
         "scripts"
-    ]
+    ],
 }

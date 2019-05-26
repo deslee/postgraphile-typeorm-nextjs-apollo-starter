@@ -9,9 +9,12 @@ import * as ormconfig from '../ormconfig';
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 import resolvers from './resolvers';
 import config from '../config';
+import * as next from 'next';
 import { makeBindingClass } from 'graphql-binding';
 import { schemaFactory } from './embeddedPostgraphile';
 import { init as initAuthentication, getToken, auth, AuthenticatedUser } from './Authentication';
+import { parse } from 'url';
+
 
 async function main() {
     const app = express();
@@ -58,6 +61,24 @@ async function main() {
             }
         }
     }).applyMiddleware({ app })
+
+    // nextjs
+    const nextApp = next({ dev: config.env === 'development', dir: __dirname })
+    const nextHandler = nextApp.getRequestHandler();
+    await nextApp.prepare();
+    const nextMiddleware: express.RequestHandler = (req, res) => {
+        const parsedUrl = parse(req.url, true);
+        const { pathname, query } = parsedUrl;
+
+        if (pathname === '/a') {
+            nextApp.render(req, res, '/b', query);
+        } else if (pathname === '/b') {
+            nextApp.render(req, res, '/a', query);
+        } else {
+            nextHandler(req, res, parsedUrl);
+        }
+    }
+    app.use(nextMiddleware)
 
     app.listen(config.port, '0.0.0.0', () => {
         console.log(`Server is running on port ${config.port}`);
