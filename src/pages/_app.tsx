@@ -48,6 +48,9 @@ class MyApp extends App<Props, State> {
             pageProps = await Component.getInitialProps(ctx);
         }
 
+        if (process.browser) {
+
+        }
         else { // (!process.browser) {
             link = (ctx && ctx.req as any).link
             // TODO: determine initial user from req
