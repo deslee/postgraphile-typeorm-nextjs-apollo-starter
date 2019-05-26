@@ -6,7 +6,7 @@ import * as jwt from 'jsonwebtoken'
 import * as uuidv4 from 'uuid/v4';
 import { Connection, EntityManager } from 'typeorm';
 import { User, PrivateUser } from './entity/User';
-import config from '../config';
+import config from './config';
 import { Session } from './entity/Session';
 import { RequestHandler } from 'express';
 import { AuthenticationError } from 'apollo-server-errors';

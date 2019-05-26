@@ -1,4 +1,4 @@
-import config from '../config'
+import config from '../src/config'
 import postgraphile from 'postgraphile';
 import { postGraphileOptions } from '../src/embeddedPostgraphile/config';
 

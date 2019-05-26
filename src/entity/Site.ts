@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, Index, OneToMany, ManyToMany, JoinTable } from 'typeorm';
 import { Auditable } from './Auditable';
-import config from "../../config";
+import config from "../config";
 import { Post } from './Post';
 import { Category } from './Category';
 import { User } from './User';

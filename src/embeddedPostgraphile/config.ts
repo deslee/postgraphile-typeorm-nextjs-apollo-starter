@@ -1,6 +1,6 @@
 import { PostGraphileOptions } from 'postgraphile';
 import PgSimplifyInflectorPlugin from '@graphile-contrib/pg-simplify-inflector';
-import config from '../../config'
+import config from '../config'
 
 export const postGraphileOptions: PostGraphileOptions = {
     appendPlugins: [

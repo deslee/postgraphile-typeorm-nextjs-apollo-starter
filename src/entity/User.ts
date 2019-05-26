@@ -1,6 +1,6 @@
 import { Auditable } from "./Auditable";
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, Index, ManyToMany } from "typeorm";
-import config from "../../config";
+import config from "../config";
 import { Site } from "./Site";
 
 @Entity({

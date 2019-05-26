@@ -9,7 +9,7 @@ import * as fs from 'fs';
 import { FetcherOperation } from 'graphql-tools/dist/stitching/makeRemoteExecutableSchema';
 import { execute, GraphQLSchema } from 'graphql';
 import { Pool } from 'pg';
-import config from '../../config';
+import config from '../config';
 import { postGraphileOptions } from './config'
 
 let _schema: GraphQLSchema;

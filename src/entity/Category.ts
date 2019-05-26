@@ -1,5 +1,5 @@
 import { Entity, Unique, Column, PrimaryGeneratedColumn, ManyToOne, Index, JoinColumn, ManyToMany } from "typeorm";
-import config from "../../config";
+import config from "../config";
 import { Auditable } from "./Auditable";
 import { Site } from "./Site";
 import { Post } from "./Post";
