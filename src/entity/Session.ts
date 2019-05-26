@@ -8,7 +8,7 @@ export class Session {
     @PrimaryGeneratedColumn()
     token: string;
 
-    @ManyToOne(_ => User, { nullable: false })
+    @ManyToOne(_ => User, { nullable: false, eager: true })
     @JoinColumn({name: 'userId'})
     @Index()
     user: User;

@@ -11,17 +11,23 @@ import resolvers from './resolvers';
 import config from '../config';
 import { makeBindingClass } from 'graphql-binding';
 import { schemaFactory } from './embeddedPostgraphile';
+import { init as initAuthentication, getToken, auth } from './Authentication';
 
 async function main() {
     const app = express();
+    const ormConnection = await createConnection(ormconfig as PostgresConnectionOptions)
 
     // basic middleware
     app.use(cors())
     app.use(bodyParser.json())
     app.use(bodyParser.urlencoded())
 
+    initAuthentication({ orm: ormConnection })
+
+    app.use('/token', getToken)
+    app.use(auth)
+
     // graphql
-    const ormConnection = await createConnection(ormconfig as PostgresConnectionOptions)
     const typeDefs = gql(importSchema(__dirname + '/schema.graphql'));
     new ApolloServer({
         typeDefs,

@@ -1,5 +1,8 @@
 import * as convict from 'convict'
 
+const DEFAULT_JWT_SECRET = 'abcde';
+type Environment = 'development' | 'test' | 'production';
+
 const config = convict({
     env: {
         format: ['development', 'test', 'production'],
@@ -10,6 +13,11 @@ const config = convict({
         format: 'port',
         default: 8080,
         env: 'PORT'
+    },
+    jwtSecret: {
+        format: String,
+        default: DEFAULT_JWT_SECRET,
+        env: 'JWT_SECRET"'
     },
     db: {
         host: {
@@ -22,15 +30,29 @@ const config = convict({
             default: 5432,
             env: 'DB_PORT'
         },
-        user: {
-            format: String,
-            default: 'le3io_user',
-            env: 'DB_USER'
+        adminUser: {
+            name: {
+                format: String,
+                default: 'postgres',
+                env: 'DB_ADMIN_NAME'
+            },
+            pass: {
+                format: String,
+                default: 'password',
+                env: 'DB_ADMIN_PASS'
+            },
         },
-        pass: {
-            format: String,
-            default: 'password',
-            env: 'DB_PASS'
+        regularUser: {
+            name: {
+                format: String,
+                default: 'le3io_user',
+                env: 'DB_USER_NAME'
+            },
+            pass: {
+                format: String,
+                default: 'password',
+                env: 'DB_USER_PASS'
+            },
         },
         name: {
             format: String,
@@ -45,14 +67,20 @@ const config = convict({
     }
 })
 
-config.loadFile(`./config.${config.get('env')}.json`)
-config.validate({allowed: 'strict'})
+const env = (config.get('env') as Environment);
+config.loadFile(`./config.${env}.json`)
+config.validate({ allowed: 'strict' })
+
+if (config.get('jwtSecret') === DEFAULT_JWT_SECRET && env === 'production') {
+    throw new Error("Please define a JWT.");
+}
 
 export default {
-    env: config.get('env') as 'development' | 'test' | 'production',
+    env: config.get('env') as Environment,
     port: config.get('port'),
+    jwtSecret: config.get('jwtSecret'),
     db: (db => ({
         ...db,
-        url: `postgres://${db.user}:${db.pass}@${db.host}:${db.port}/${db.name}`
+        url: (admin: boolean = false) => `postgres://${admin ? db.adminUser.name : db.regularUser.name}:${admin ? db.adminUser.pass : db.regularUser.pass}@${db.host}:${db.port}/${db.name}`,
     }))(config.get('db'))
 };

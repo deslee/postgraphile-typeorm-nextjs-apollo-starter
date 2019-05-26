@@ -1,5 +1,15 @@
 # import SitesOrderBy, SitesCondition, Site, UsersOrderBy, UserCondition, User, CreateSiteInput, CreateSitePayload, CreateUserInput, CreateUserPayload, UpdateSiteInput, UpdateSitePayload, UpdateUserByEmailInput, UpdateUserPayload, DeleteSiteInput, DeleteSitePayload, DeleteUserByEmailInput, DeleteUserPayload from "./generated/postgraphile.graphql"
 
+type LoginPayload {
+  token: String!
+  user: User!
+}
+
+type RegisterPayload {
+  token: String!
+  user: User!
+}
+
 type Query {
   """Reads a set of `Site`."""
   sites(
@@ -41,6 +51,9 @@ type Query {
 }
 
 type Mutation {
+  login(email: String!, password: String!): LoginPayload!
+  register(email: String!, password: String!): RegisterPayload!
+
   """Creates a single `Site`."""
   createSite(
     """

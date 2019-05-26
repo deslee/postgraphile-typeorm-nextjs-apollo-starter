@@ -13,7 +13,7 @@ export class User implements Auditable {
     @Column({
         unique: true
     })
-    @Index({unique: true})
+    @Index({ unique: true })
     email: string;
 
     @Column({
@@ -24,16 +24,16 @@ export class User implements Auditable {
     @ManyToMany(_ => Site, site => site.users)
     sites: Site[];
 
-    @Column({nullable: true})
+    @Column({ nullable: true })
     createdBy: string;
 
-    @Column({nullable: true})
+    @Column({ nullable: true })
     updatedBy: string;
 
-    @Column({nullable: true})
+    @Column({ nullable: true })
     createdAt: Date;
 
-    @Column({nullable: true})
+    @Column({ nullable: true })
     updatedAt: Date;
 }
 
@@ -47,15 +47,20 @@ export class PrivateUser implements Auditable {
     @Column()
     password: string;
 
-    @Column({nullable: true})
+    @OneToOne(_ => User, { eager: true })
+    @Index()
+    @JoinColumn({ name: 'userId' })
+    user: User;
+
+    @Column({ nullable: true })
     createdBy: string;
 
-    @Column({nullable: true})
+    @Column({ nullable: true })
     updatedBy: string;
 
-    @Column({nullable: true})
+    @Column({ nullable: true })
     createdAt: Date;
 
-    @Column({nullable: true})
+    @Column({ nullable: true })
     updatedAt: Date;
 }

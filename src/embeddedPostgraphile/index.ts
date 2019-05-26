@@ -17,7 +17,7 @@ type Locals = {[key: string]: {} | string | number | boolean | undefined | null}
 const getSchema = async () => {
     if (!_schema) {
         _schema = await createPostGraphileSchema(
-            config.db.url,
+            config.db.url(),
             config.db.schema,
             postGraphileOptions
         );
@@ -29,7 +29,7 @@ const getSchema = async () => {
 
 let pgPool: Pool | undefined = undefined;
 function initPgPool() {
-    pgPool = new Pool({ connectionString: config.db.url });
+    pgPool = new Pool({ connectionString: config.db.url() });
     return pgPool;
 }
 
