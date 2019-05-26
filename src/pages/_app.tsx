@@ -1,7 +1,6 @@
 import * as React from 'react';
 import App, { Container, NextAppContext } from 'next/app'
 import { ApolloProvider, getDataFromTree } from 'react-apollo';
-import withApolloClient from '../lib/withApolloClient'
 import { ApolloClient, NormalizedCacheObject, InMemoryCache, ApolloLink } from 'apollo-boost';
 import { AuthUser, AuthUserProvider, UpdateAuthUser } from '../lib/auth';
 import { AUTH_USER_KEY } from '../lib/constants';
