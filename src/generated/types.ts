@@ -1,21 +1,11 @@
 export type Maybe<T> = T | null;
 
-/** A condition to be used against `Site` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export interface SiteCondition {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<number>;
-  /** Checks for equality with the object’s `name` field. */
-  name?: Maybe<string>;
-  /** Checks for equality with the object’s `data` field. */
-  data?: Maybe<Json>;
-  /** Checks for equality with the object’s `createdBy` field. */
-  createdBy?: Maybe<string>;
-  /** Checks for equality with the object’s `updatedBy` field. */
-  updatedBy?: Maybe<string>;
-  /** Checks for equality with the object’s `createdAt` field. */
-  createdAt?: Maybe<Datetime>;
-  /** Checks for equality with the object’s `updatedAt` field. */
-  updatedAt?: Maybe<Datetime>;
+/** A condition to be used against `SiteUsersUser` object types. All fields are tested for equality and combined with a logical ‘and.’ */
+export interface SiteUsersUserCondition {
+  /** Checks for equality with the object’s `siteId` field. */
+  siteId?: Maybe<number>;
+  /** Checks for equality with the object’s `userId` field. */
+  userId?: Maybe<number>;
 }
 /** A condition to be used against `Post` object types. All fields are tested for equality and combined with a logical ‘and.’ */
 export interface PostCondition {
@@ -75,13 +65,6 @@ export interface CategoryCondition {
   /** Checks for equality with the object’s `siteId` field. */
   siteId?: Maybe<number>;
 }
-/** A condition to be used against `SiteUsersUser` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export interface SiteUsersUserCondition {
-  /** Checks for equality with the object’s `siteId` field. */
-  siteId?: Maybe<number>;
-  /** Checks for equality with the object’s `userId` field. */
-  userId?: Maybe<number>;
-}
 /** A condition to be used against `Asset` object types. All fields are tested for equality and combined with a logical ‘and.’ */
 export interface AssetCondition {
   /** Checks for equality with the object’s `id` field. */
@@ -100,6 +83,23 @@ export interface AssetCondition {
   updatedAt?: Maybe<Datetime>;
   /** Checks for equality with the object’s `siteId` field. */
   siteId?: Maybe<number>;
+}
+/** A condition to be used against `Site` object types. All fields are tested for equality and combined with a logical ‘and.’ */
+export interface SiteCondition {
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<number>;
+  /** Checks for equality with the object’s `name` field. */
+  name?: Maybe<string>;
+  /** Checks for equality with the object’s `data` field. */
+  data?: Maybe<Json>;
+  /** Checks for equality with the object’s `createdBy` field. */
+  createdBy?: Maybe<string>;
+  /** Checks for equality with the object’s `updatedBy` field. */
+  updatedBy?: Maybe<string>;
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: Maybe<Datetime>;
+  /** Checks for equality with the object’s `updatedAt` field. */
+  updatedAt?: Maybe<Datetime>;
 }
 /** A condition to be used against `User` object types. All fields are tested for equality and combined with a logical ‘and.’ */
 export interface UserCondition {
@@ -219,23 +219,13 @@ export interface DeleteUserByEmailInput {
 
   email: string;
 }
-/** Methods to use when ordering `Site`. */
-export type SitesOrderBy =
+/** Methods to use when ordering `SiteUsersUser`. */
+export type SiteUsersUsersOrderBy =
   | "NATURAL"
-  | "ID_ASC"
-  | "ID_DESC"
-  | "NAME_ASC"
-  | "NAME_DESC"
-  | "DATA_ASC"
-  | "DATA_DESC"
-  | "CREATED_BY_ASC"
-  | "CREATED_BY_DESC"
-  | "UPDATED_BY_ASC"
-  | "UPDATED_BY_DESC"
-  | "CREATED_AT_ASC"
-  | "CREATED_AT_DESC"
-  | "UPDATED_AT_ASC"
-  | "UPDATED_AT_DESC"
+  | "SITE_ID_ASC"
+  | "SITE_ID_DESC"
+  | "USER_ID_ASC"
+  | "USER_ID_DESC"
   | "PRIMARY_KEY_ASC"
   | "PRIMARY_KEY_DESC";
 /** Methods to use when ordering `Post`. */
@@ -304,15 +294,6 @@ export type CategoriesOrderBy =
   | "SITE_ID_DESC"
   | "PRIMARY_KEY_ASC"
   | "PRIMARY_KEY_DESC";
-/** Methods to use when ordering `SiteUsersUser`. */
-export type SiteUsersUsersOrderBy =
-  | "NATURAL"
-  | "SITE_ID_ASC"
-  | "SITE_ID_DESC"
-  | "USER_ID_ASC"
-  | "USER_ID_DESC"
-  | "PRIMARY_KEY_ASC"
-  | "PRIMARY_KEY_DESC";
 /** Methods to use when ordering `Asset`. */
 export type AssetsOrderBy =
   | "NATURAL"
@@ -332,6 +313,25 @@ export type AssetsOrderBy =
   | "UPDATED_AT_DESC"
   | "SITE_ID_ASC"
   | "SITE_ID_DESC"
+  | "PRIMARY_KEY_ASC"
+  | "PRIMARY_KEY_DESC";
+/** Methods to use when ordering `Site`. */
+export type SitesOrderBy =
+  | "NATURAL"
+  | "ID_ASC"
+  | "ID_DESC"
+  | "NAME_ASC"
+  | "NAME_DESC"
+  | "DATA_ASC"
+  | "DATA_DESC"
+  | "CREATED_BY_ASC"
+  | "CREATED_BY_DESC"
+  | "UPDATED_BY_ASC"
+  | "UPDATED_BY_DESC"
+  | "CREATED_AT_ASC"
+  | "CREATED_AT_DESC"
+  | "UPDATED_AT_ASC"
+  | "UPDATED_AT_DESC"
   | "PRIMARY_KEY_ASC"
   | "PRIMARY_KEY_DESC";
 /** Methods to use when ordering `User`. */
@@ -379,6 +379,7 @@ export interface Node {
 // ====================================================
 
 export interface Query {
+  me?: Maybe<User>;
   /** Reads a set of `Site`. */
   sites?: Maybe<Site[]>;
 
@@ -391,6 +392,40 @@ export interface Query {
   user?: Maybe<User>;
 
   userByEmail?: Maybe<User>;
+}
+
+export interface User extends Node {
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: string;
+
+  id: number;
+
+  email: string;
+
+  data: Json;
+
+  createdBy?: Maybe<string>;
+
+  updatedBy?: Maybe<string>;
+
+  createdAt?: Maybe<Datetime>;
+
+  updatedAt?: Maybe<Datetime>;
+  /** Reads and enables pagination through a set of `SiteUsersUser`. */
+  siteUsersUsers: SiteUsersUser[];
+}
+
+export interface SiteUsersUser extends Node {
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: string;
+
+  siteId: number;
+
+  userId: number;
+  /** Reads a single `Site` that is related to this `SiteUsersUser`. */
+  site?: Maybe<Site>;
+  /** Reads a single `User` that is related to this `SiteUsersUser`. */
+  user?: Maybe<User>;
 }
 
 export interface Site extends Node {
@@ -529,40 +564,6 @@ export interface Asset extends Node {
   postAssetsAssets: PostAssetsAsset[];
 }
 
-export interface SiteUsersUser extends Node {
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: string;
-
-  siteId: number;
-
-  userId: number;
-  /** Reads a single `Site` that is related to this `SiteUsersUser`. */
-  site?: Maybe<Site>;
-  /** Reads a single `User` that is related to this `SiteUsersUser`. */
-  user?: Maybe<User>;
-}
-
-export interface User extends Node {
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: string;
-
-  id: number;
-
-  email: string;
-
-  data: Json;
-
-  createdBy?: Maybe<string>;
-
-  updatedBy?: Maybe<string>;
-
-  createdAt?: Maybe<Datetime>;
-
-  updatedAt?: Maybe<Datetime>;
-  /** Reads and enables pagination through a set of `SiteUsersUser`. */
-  siteUsersUsers: SiteUsersUser[];
-}
-
 export interface Mutation {
   login: LoginPayload;
 
@@ -697,6 +698,16 @@ export interface UserQueryArgs {
 export interface UserByEmailQueryArgs {
   email: string;
 }
+export interface SiteUsersUsersUserArgs {
+  /** Only read the first `n` values of the set. */
+  first?: Maybe<number>;
+  /** Skip the first `n` values. */
+  offset?: Maybe<number>;
+  /** The method to use when ordering `SiteUsersUser`. */
+  orderBy?: Maybe<SiteUsersUsersOrderBy[]>;
+  /** A condition to be used in determining which values should be returned by the collection. */
+  condition?: Maybe<SiteUsersUserCondition>;
+}
 export interface PostsSiteArgs {
   /** Only read the first `n` values of the set. */
   first?: Maybe<number>;
@@ -776,16 +787,6 @@ export interface PostAssetsAssetsAssetArgs {
   orderBy?: Maybe<PostAssetsAssetsOrderBy[]>;
   /** A condition to be used in determining which values should be returned by the collection. */
   condition?: Maybe<PostAssetsAssetCondition>;
-}
-export interface SiteUsersUsersUserArgs {
-  /** Only read the first `n` values of the set. */
-  first?: Maybe<number>;
-  /** Skip the first `n` values. */
-  offset?: Maybe<number>;
-  /** The method to use when ordering `SiteUsersUser`. */
-  orderBy?: Maybe<SiteUsersUsersOrderBy[]>;
-  /** A condition to be used in determining which values should be returned by the collection. */
-  condition?: Maybe<SiteUsersUserCondition>;
 }
 export interface LoginMutationArgs {
   email: string;

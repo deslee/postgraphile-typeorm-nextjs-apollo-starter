@@ -33,8 +33,13 @@ export default {
     },
 
     async login(parent: any, { email, password }: LoginMutationArgs, ctx: Context, info: any): Promise<LoginPayload> {
-        return await ctx.orm.transaction(async tx => {
-            const userInfo = await tx.findOne(PrivateUser, { user: { email: email } });
+        const session = await ctx.orm.transaction(async tx => {
+            const user = await tx.getRepository(User).findOne({ email });
+            if (!user) {
+                throw new ApolloError(`No such user found for email: ${email}`, 'NOT_FOUND');
+            }
+
+            const userInfo = await tx.getRepository(PrivateUser).findOne({ user: { id: user.id } })
 
             if (!userInfo) {
                 throw new ApolloError(`No such user found for email: ${email}`, 'NOT_FOUND');
@@ -46,18 +51,19 @@ export default {
             }
 
             const session = await createSession(tx, userInfo.user)
-
-            return {
-                token: signToken({
-                    sessionId: session.token,
-                    userId: session.user.id
-                })
-            }
+            return session;
         })
+
+        return {
+            token: signToken({
+                sessionId: session.token,
+                userId: session.user.id,
+            })
+        }
     },
 
     async register(parent: any, { email, password }: RegisterMutationArgs, ctx: Context, info: any): Promise<RegisterPayload> {
-        return await ctx.orm.transaction(async tx => {
+        const partial = await ctx.orm.transaction(async tx => {
             var privateUser = await createUser({ tx: tx, email, password })
             const session = await createSession(tx, privateUser.user)
 
@@ -66,8 +72,12 @@ export default {
                 token: signToken({
                     sessionId: session.token,
                     userId: session.user.id
-                })
+                }),
             }
         })
+
+        return {
+            ...partial
+        }
     }
 }

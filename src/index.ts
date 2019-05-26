@@ -11,7 +11,7 @@ import resolvers from './resolvers';
 import config from '../config';
 import { makeBindingClass } from 'graphql-binding';
 import { schemaFactory } from './embeddedPostgraphile';
-import { init as initAuthentication, getToken, auth } from './Authentication';
+import { init as initAuthentication, getToken, auth, AuthenticatedUser } from './Authentication';
 
 async function main() {
     const app = express();
@@ -45,6 +45,15 @@ async function main() {
                 ...c,
                 orm: ormConnection,
                 gql: new CustomBinding(),
+                elevatedGql: (user?: AuthenticatedUser) => {
+                    const ElevatedBinding = makeBindingClass<BindingConstructor<Binding>>({
+                        schema: schemaFactory({
+                            'claims.userId': user ? user.userId : undefined,
+                            'claims.role': user ? 'le3io_user' : undefined
+                        })
+                    })
+                    return new ElevatedBinding()
+                },
                 req: c.req as any
             }
         }

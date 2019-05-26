@@ -10,6 +10,8 @@ type RegisterPayload {
 }
 
 type Query {
+  me: User
+
   """Reads a set of `Site`."""
   sites(
     """Only read the first `n` values of the set."""
