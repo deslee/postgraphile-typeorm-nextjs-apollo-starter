@@ -4,18 +4,19 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import * as passportJwt from 'passport-jwt';
 import * as jwt from 'jsonwebtoken'
 import * as uuidv4 from 'uuid/v4';
-import { Connection } from 'typeorm';
+import { Connection, EntityManager } from 'typeorm';
 import { User, PrivateUser } from './entity/User';
 import config from '../config';
 import { Session } from './entity/Session';
 import { RequestHandler } from 'express';
+import { AuthenticationError } from 'apollo-server-errors';
 
 export interface AuthenticatedUser {
     userId?: string;
     sessionId?: string;
 }
 
-export async function createSession(orm: Connection, user: User) {
+export async function createSession(orm: EntityManager, user: User) {
     const expiration = new Date(new Date().toUTCString());
     expiration.setDate( expiration.getDate() + 7 )
     const session = {
@@ -29,32 +30,61 @@ export async function createSession(orm: Connection, user: User) {
     return session;
 }
 
+export async function createUser({ tx, email, password }: { tx: EntityManager, email: string, password: string} ) {
+    const pw = await bcrypt.hash(password, 10);
+    await tx.getRepository(User).insert({
+        email,
+        data: '{}'
+    })
+
+    const user = await tx.getRepository(User).findOne({ email })
+
+    if (!user) {
+        throw new AuthenticationError('Failed to save');
+    }
+
+    await tx.getRepository(PrivateUser).insert({
+        user: user,
+        password: pw
+    })
+
+    const privateUser = await tx.getRepository(PrivateUser).findOne({ user: { id: user.id } })
+
+    if (!privateUser) {
+        throw new AuthenticationError('Failed to save');
+    }
+
+    return privateUser;
+}
+
 export function init({ orm }: { orm: Connection }) {
     passport.use(new LocalStrategy({
         usernameField: 'email',
         passwordField: 'password',
         session: false
     }, async (email, password, done) => {
-        const userInfo = await orm.getRepository(PrivateUser).findOne({
-            user: {
-                email: email
+        return await orm.transaction(async tx => {
+            const userInfo = await tx.getRepository(PrivateUser).findOne({
+                user: {
+                    email: email
+                }
+            })
+
+            if (userInfo !== undefined && userInfo.user.email === email) {
+                const valid = await bcrypt.compare(password, userInfo.password)
+                if (valid) {
+                    const session = await createSession(tx, userInfo.user);
+
+                    done(null, {
+                        userId: session.user.id,
+                        sessionId: session.token
+                    } as AuthenticatedUser)
+                    return;
+                }
             }
+            done(null, null)
         })
-
-        if (userInfo !== undefined && userInfo.user.email === email) {
-            const valid = await bcrypt.compare(password, userInfo.password)
-            if (valid) {
-                const session = await createSession(orm, userInfo.user);
-
-                done(null, {
-                    userId: session.user.id,
-                    sessionId: session.token
-                } as AuthenticatedUser)
-                return;
-            }
-        }
-        done(null, null)
-    }))
+        }))
 
     passport.use(new passportJwt.Strategy({
         jwtFromRequest: passportJwt.ExtractJwt.fromAuthHeaderAsBearerToken(),

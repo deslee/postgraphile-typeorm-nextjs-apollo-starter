@@ -4,8 +4,10 @@ import { proxyFor } from '../utils';
 import { Context } from '../../Context'
 import { Site } from '../../entity/Site';
 import { PrivateUser, User } from '../../entity/User';
+import { User as GqlUser, RegisterMutationArgs, RegisterPayload } from 'src/generated/types';
 import { ApolloError, AuthenticationError } from 'apollo-server-errors';
-import { signToken, createSession } from '../../Authentication';
+import { signToken, createSession, createUser } from '../../Authentication';
+import { LoginMutationArgs, LoginPayload } from 'src/generated/types';
 
 export default {
     ...proxyFor<BindMutation>([
@@ -30,61 +32,42 @@ export default {
         }
     },
 
-    async login(parent: any, { email, password }: any, ctx: Context, info: any) {
-        const userInfo = await ctx.orm.manager.findOne(PrivateUser, { user: { email: email } });
+    async login(parent: any, { email, password }: LoginMutationArgs, ctx: Context, info: any): Promise<LoginPayload> {
+        return await ctx.orm.transaction(async tx => {
+            const userInfo = await tx.findOne(PrivateUser, { user: { email: email } });
 
-        if (!userInfo) {
-            throw new ApolloError(`No such user found for email: ${email}`, 'NOT_FOUND');
-        }
+            if (!userInfo) {
+                throw new ApolloError(`No such user found for email: ${email}`, 'NOT_FOUND');
+            }
 
-        const valid = await bcrypt.compare(password, userInfo.password);
-        if (!valid) {
-            throw new AuthenticationError('Invalid password');
-        }
+            const valid = await bcrypt.compare(password, userInfo.password);
+            if (!valid) {
+                throw new AuthenticationError('Invalid password');
+            }
 
-        const session = await createSession(ctx.orm, userInfo.user)
+            const session = await createSession(tx, userInfo.user)
 
-        return {
-            user: userInfo.user,
-            token: signToken({
-                sessionId: session.token,
-                userId: session.user.id
-            })
-        }
+            return {
+                token: signToken({
+                    sessionId: session.token,
+                    userId: session.user.id
+                })
+            }
+        })
     },
 
-    async register(parent: any, { email, password }: any, ctx: Context, info: any) {
-        const pw = await bcrypt.hash(password, 10);
-        await ctx.orm.getRepository(User).insert({
-            email,
-            data: '{}'
+    async register(parent: any, { email, password }: RegisterMutationArgs, ctx: Context, info: any): Promise<RegisterPayload> {
+        return await ctx.orm.transaction(async tx => {
+            var privateUser = await createUser({ tx: tx, email, password })
+            const session = await createSession(tx, privateUser.user)
+
+            return {
+                userId: privateUser.user.id,
+                token: signToken({
+                    sessionId: session.token,
+                    userId: session.user.id
+                })
+            }
         })
-
-        const user = await ctx.orm.getRepository(User).findOne({ email })
-
-        if (!user) {
-            throw new AuthenticationError('Failed to save');
-        }
-
-        await ctx.orm.getRepository(PrivateUser).insert({
-            user: user,
-            password: pw
-        })
-
-        const privateUser = await ctx.orm.getRepository(PrivateUser).findOne({ user: { id: user.id } })
-
-        if (!privateUser) {
-            throw new AuthenticationError('Failed to save');
-        }
-
-        const session = await createSession(ctx.orm, privateUser!.user)
-
-        return {
-            user,
-            token: signToken({
-                sessionId: session.token,
-                userId: session.user.id
-            })
-        }
     }
 }

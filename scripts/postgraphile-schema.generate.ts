@@ -3,7 +3,7 @@ import postgraphile from 'postgraphile';
 import { postGraphileOptions } from '../src/embeddedPostgraphile/config';
 
 postgraphile(
-    config.db.url,
+    config.db.url(),
     config.db.schema,
     {
         ...postGraphileOptions,

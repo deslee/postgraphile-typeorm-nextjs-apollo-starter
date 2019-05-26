@@ -2,12 +2,11 @@
 
 type LoginPayload {
   token: String!
-  user: User!
 }
 
 type RegisterPayload {
   token: String!
-  user: User!
+  userId: String!
 }
 
 type Query {
